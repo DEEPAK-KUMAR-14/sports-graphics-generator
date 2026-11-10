@@ -10,7 +10,6 @@ headless/input/*
 !headless/input/.gitkeep
 headless/output/*
 !headless/output/.gitkeep
-headless/assets/fonts/
 📂 Processing file: arsenal_vs_chelsea.json
 🎨 Randomly selected background: emilio-garcia-AWdCgDDedH0-unsplash.jpg
 ✅ Success! Football graphic generated: output/arsenal_vs_chelsea.webp
