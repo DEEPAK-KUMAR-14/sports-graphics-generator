@@ -95,7 +95,7 @@ def render_football_graphic(sport_payload, bg_path, output_file_path, output_con
             # ----------------------------------
 
             canvas.paste(bg, (0, 0))
-            canvas = Image.alpha_composite(canvas, overlay) # Remove or comment this line if using Option C (No Dimness)
+            # canvas = Image.alpha_composite(canvas, overlay) # Remove or comment this line if using Option C (No Dimness)
         except Exception as e:
             print(f"Warning: Could not load background image: {e}")
 

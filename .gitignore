@@ -11,3 +11,159 @@ headless/input/*
 headless/output/*
 !headless/output/.gitkeep
 headless/assets/fonts/
+📂 Processing file: arsenal_vs_chelsea.json
+🎨 Randomly selected background: emilio-garcia-AWdCgDDedH0-unsplash.jpg
+✅ Success! Football graphic generated: output/arsenal_vs_chelsea.webp
+
+📂 Processing file: barca_vs_real.json
+🎨 Randomly selected background: jr-korpa-sFlfNcnrmDE-unsplash.jpg
+✅ Success! Football graphic generated: output/barca_vs_real.webp
+(venv) neon@neon-HP-Laptop-14s-dk0xxx:/run/media/neon/DEVELOPMENT/sports-graphics-generator$ python headless/generator.py
+
+📂 Processing file: arsenal_vs_chelsea.json
+🎨 Randomly selected background: pawel-czerwinski-XM1YUUVXj64-unsplash.jpg
+Warning: Could not load background image: name 'overlay' is not defined
+✅ Success! Football graphic generated: output/arsenal_vs_chelsea.webp
+
+📂 Processing file: barca_vs_real.json
+🎨 Randomly selected background: emilio-garcia-AWdCgDDedH0-unsplash.jpg
+Warning: Could not load background image: name 'overlay' is not defined
+✅ Success! Football graphic generated: output/barca_vs_real.webp
+(venv) neon@neon-HP-Laptop-14s-dk0xxx:/run/media/neon/DEVELOPMENT/sports-graphics-generator$ python headless/generator.py
+
+📂 Processing file: arsenal_vs_chelsea.json
+🎨 Randomly selected background: jr-korpa-sFlfNcnrmDE-unsplash.jpg
+Warning: Could not load background image: name 'overlay' is not defined
+✅ Success! Football graphic generated: output/arsenal_vs_chelsea.webp
+
+📂 Processing file: barca_vs_real.json
+🎨 Randomly selected background: pawel-czerwinski-XM1YUUVXj64-unsplash.jpg
+Warning: Could not load background image: name 'overlay' is not defined
+✅ Success! Football graphic generated: output/barca_vs_real.webp
+(venv) neon@neon-HP-Laptop-14s-dk0xxx:/run/media/neon/DEVELOPMENT/sports-graphics-generator$ git
+usage: git [-v | --version] [-h | --help] [-C <path>] [-c <name>=<value>]
+           [--exec-path[=<path>]] [--html-path] [--man-path] [--info-path]
+           [-p | --paginate | -P | --no-pager] [--no-replace-objects] [--no-lazy-fetch]
+           [--no-optional-locks] [--no-advice] [--bare] [--git-dir=<path>]
+           [--work-tree=<path>] [--namespace=<name>] [--config-env=<name>=<envvar>]
+           <command> [<args>]
+
+These are common Git commands used in various situations:
+
+start a working area (see also: git help tutorial)
+   clone      Clone a repository into a new directory
+   init       Create an empty Git repository or reinitialize an existing one
+
+work on the current change (see also: git help everyday)
+   add        Add file contents to the index
+   mv         Move or rename a file, a directory, or a symlink
+   restore    Restore working tree files
+   rm         Remove files from the working tree and from the index
+
+examine the history and state (see also: git help revisions)
+   bisect     Use binary search to find the commit that introduced a bug
+   diff       Show changes between commits, commit and working tree, etc
+   grep       Print lines matching a pattern
+   log        Show commit logs
+   show       Show various types of objects
+   status     Show the working tree status
+
+grow, mark and tweak your common history
+   backfill   Download missing objects in a partial clone
+   branch     List, create, or delete branches
+   commit     Record changes to the repository
+   merge      Join two or more development histories together
+   rebase     Reapply commits on top of another base tip
+   reset      Set `HEAD` or the index to a known state
+   switch     Switch branches
+   tag        Create, list, delete or verify tags
+
+collaborate (see also: git help workflows)
+   fetch      Download objects and refs from another repository
+   pull       Fetch from and integrate with another repository or a local branch
+   push       Update remote refs along with associated objects
+
+'git help -a' and 'git help -g' list available subcommands and some
+concept guides. See 'git help <command>' or 'git help <concept>'
+to read about a specific subcommand or concept.
+See 'git help git' for an overview of the system.
+(venv) neon@neon-HP-Laptop-14s-dk0xxx:/run/media/neon/DEVELOPMENT/sports-graphics-generator$ git init
+hint: Using 'master' as the name for the initial branch. This default branch name
+hint: will change to "main" in Git 3.0. To configure the initial branch name
+hint: to use in all of your new repositories, which will suppress this warning,
+hint: call:
+hint:
+hint:   git config --global init.defaultBranch <name>
+hint:
+hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+hint: 'development'. The just-created branch can be renamed via this command:
+hint:
+hint:   git branch -m <name>
+hint:
+hint: Disable this message with "git config set advice.defaultBranchName false"
+Initialized empty Git repository in /run/media/neon/DEVELOPMENT/sports-graphics-generator/.git/
+(venv) neon@neon-HP-Laptop-14s-dk0xxx:/run/media/neon/DEVELOPMENT/sports-graphics-generator$ git add .
+(venv) neon@neon-HP-Laptop-14s-dk0xxx:/run/media/neon/DEVELOPMENT/sports-graphics-generator$ git commit -m "Initial commit: Modular headless sports graphics generator with SVG and multi-sport schema support"
+[master (root-commit) bbeb1b6] Initial commit: Modular headless sports graphics generator with SVG and multi-sport schema support
+ 18 files changed, 935 insertions(+)
+ create mode 100644 .gitignore
+ create mode 100644 frontend/index.html
+ create mode 100644 headless/assets/background-images/abigail-keenan-8-s5QuUBtyM-unsplash.jpg
+ create mode 100644 headless/assets/background-images/bence-balla-schottner-KMn0EXRfG9c-unsplash.jpg
+ create mode 100644 headless/assets/background-images/emilio-garcia-AWdCgDDedH0-unsplash.jpg
+ create mode 100644 headless/assets/background-images/jr-korpa-sFlfNcnrmDE-unsplash.jpg
+ create mode 100644 headless/assets/background-images/pawel-czerwinski-XM1YUUVXj64-unsplash.jpg
+ create mode 100644 headless/assets/background-images/vienna-reyes-qCrKTET_09o-unsplash.jpg
+ create mode 100644 headless/assets/team-logos/arsenal.svg
+ create mode 100644 headless/assets/team-logos/barca.svg
+ create mode 100644 headless/assets/team-logos/chelsea.svg
+ create mode 100644 headless/assets/team-logos/real.svg
+ create mode 100644 headless/formats/input_format.json
+ create mode 100644 headless/formats/output_format.json
+ create mode 100644 headless/generator.py
+ create mode 100644 headless/requirements.txt
+ create mode 100644 headless/scripts/background_selector.py
+ create mode 100644 headless/scripts/image_renderer.py
+(venv) neon@neon-HP-Laptop-14s-dk0xxx:/run/media/neon/DEVELOPMENT/sports-graphics-generator$ git remote add origin https://github.com/DEEP
+AK-KUMAR-14/sports-graphics-generator
+(venv) neon@neon-HP-Laptop-14s-dk0xxx:/run/media/neon/DEVELOPMENT/sports-graphics-generator$ git branch -M main
+(venv) neon@neon-HP-Laptop-14s-dk0xxx:/run/media/neon/DEVELOPMENT/sports-graphics-generator$ git push -u origin main
+To https://github.com/DEEPAK-KUMAR-14/sports-graphics-generator
+ ! [rejected]        main -> main (fetch first)
+error: failed to push some refs to 'https://github.com/DEEPAK-KUMAR-14/sports-graphics-generator'
+hint: Updates were rejected because the remote contains work that you do not
+hint: have locally. This is usually caused by another repository pushing to
+hint: the same ref. If you want to integrate the remote changes, use
+hint: 'git pull' before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+(venv) neon@neon-HP-Laptop-14s-dk0xxx:/run/media/neon/DEVELOPMENT/sports-graphics-generator$ git pull origin main --allow-unrelated-histories
+remote: Enumerating objects: 3, done.
+remote: Counting objects: 100% (3/3), done.
+remote: Compressing objects: 100% (2/2), done.
+remote: Total 3 (delta 0), reused 0 (delta 0), pack-reused 0 (from 0)
+Unpacking objects: 100% (3/3), 900 bytes | 2.00 KiB/s, done.
+From https://github.com/DEEPAK-KUMAR-14/sports-graphics-generator
+ * branch            main       -> FETCH_HEAD
+ * [new branch]      main       -> origin/main
+hint: You have divergent branches and need to specify how to reconcile them.
+hint: You can do so by running one of the following commands sometime before
+hint: your next pull:
+hint:
+hint:   git config pull.rebase false  # merge
+hint:   git config pull.rebase true   # rebase
+hint:   git config pull.ff only       # fast-forward only
+hint:
+hint: You can replace "git config" with "git config --global" to set a default
+hint: preference for all repositories. You can also pass --rebase, --no-rebase,
+hint: or --ff-only on the command line to override the configured default per
+hint: invocation.
+fatal: Need to specify how to reconcile divergent branches.
+(venv) neon@neon-HP-Laptop-14s-dk0xxx:/run/media/neon/DEVELOPMENT/sports-graphics-generator$ git push -u origin main
+To https://github.com/DEEPAK-KUMAR-14/sports-graphics-generator
+ ! [rejected]        main -> main (non-fast-forward)
+error: failed to push some refs to 'https://github.com/DEEPAK-KUMAR-14/sports-graphics-generator'
+hint: Updates were rejected because the tip of your current branch is behind
+hint: its remote counterpart. If you want to integrate the remote changes,
+hint: use 'git pull' before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+(venv) neon@neon-HP-Laptop-14s-dk0xxx:/run/media/neon/DEVELOPMENT/sports-graphics-generator$ 
