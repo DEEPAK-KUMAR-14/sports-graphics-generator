@@ -88,10 +88,10 @@ def render_football_graphic(sport_payload, bg_path, output_file_path, output_con
             
             # --- BACKGROUND DIMNESS CONTROL ---
             # OPTION A (Current / Default): Dark blue tint with medium-high dimness (180 alpha) for best text readability
-            # overlay = Image.new("RGBA", (width, height), (10, 15, 30, 180))
+            overlay = Image.new("RGBA", (width, height), (10, 15, 30, 140))
             
             # OPTION B (Lighter Dimness): Lower the alpha value (e.g., 100 instead of 180) for a brighter background
-            overlay = Image.new("RGBA", (width, height), (10, 15, 30, 100))
+            # overlay = Image.new("RGBA", (width, height), (10, 15, 30, 100))
             
             # OPTION C (No Dimness / Original Brightness): To remove dimness completely, comment out or delete 
             # the 'overlay =' line above, and comment out the 'canvas = Image.alpha_composite(...)' line below.
