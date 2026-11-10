@@ -1,0 +1,13 @@
+# Python
+venv/
+__pycache__/
+*.py[cod]
+*$py.class
+.vscode/
+
+# Local Outputs & Caches
+headless/input/*
+!headless/input/.gitkeep
+headless/output/*
+!headless/output/.gitkeep
+headless/assets/fonts/

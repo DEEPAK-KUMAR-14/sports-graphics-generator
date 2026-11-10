@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sports Match Graphics Studio & Automation Hub</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- html2canvas for browser image downloading -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Oswald:wght@500;700&family=Montserrat:wght@700;900&family=Teko:wght@600&display=swap" rel="stylesheet">
+    <style>
+        .preview-canvas {
+            width: 100%;
+            max-width: 800px;
+            aspect-ratio: 1200 / 630;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.3);
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="bg-slate-900 border-b border-slate-800 py-4 px-6 flex justify-between items-center">
+        <div class="flex items-center space-x-3">
+            <span class="bg-emerald-500 text-slate-950 font-black px-2.5 py-1 rounded-lg text-sm">PRO</span>
+            <h1 class="text-xl font-bold tracking-tight">Sports Match Graphic Creator</h1>
+        </div>
+        <div class="flex space-x-2">
+            <button onclick="switchTab('studio')" id="btn-studio" class="px-4 py-2 text-sm font-semibold rounded-lg bg-emerald-600 text-white transition">Graphic Studio</button>
+            <button onclick="switchTab('headless')" id="btn-headless" class="px-4 py-2 text-sm font-semibold rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 transition">Headless Python Code</button>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-grow container mx-auto p-6">
+
+        <!-- STUDIO TAB -->
+        <div id="tab-studio" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <!-- Controls Sidebar -->
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-6 lg:col-span-1">
+                <h2 class="text-lg font-semibold text-emerald-400 border-b border-slate-800 pb-3">Match Parameters</h2>
+
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-400 uppercase mb-1">Home Team Name</label>
+                        <input type="text" id="homeName" value="FC Barcelona" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-emerald-500" oninput="updatePreview()">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-400 uppercase mb-1">Away Team Name</label>
+                        <input type="text" id="awayName" value="Real Madrid" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-emerald-500" oninput="updatePreview()">
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-400 uppercase mb-1">Home Score</label>
+                            <input type="text" id="homeScore" value="2" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-center text-lg font-bold focus:outline-none focus:border-emerald-500" oninput="updatePreview()">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-400 uppercase mb-1">Away Score</label>
+                            <input type="text" id="awayScore" value="1" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-center text-lg font-bold focus:outline-none focus:border-emerald-500" oninput="updatePreview()">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Backdrop Selector -->
+                <div class="space-y-2">
+                    <label class="block text-xs font-semibold text-slate-400 uppercase">Stadium Backdrop Preview</label>
+                    <select id="bgSelect" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-emerald-500" onchange="updatePreview()">
+                        <option value="https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=1200&q=80">Night Floodlight Stadium</option>
+                        <option value="https://images.unsplash.com/photo-1518091043644-c1d4457512c6?auto=format&fit=crop&w=1200&q=80">Green Pitch Turf</option>
+                        <option value="https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=1200&q=80">Packed Soccer Arena</option>
+                    </select>
+                </div>
+
+                <!-- Typography Selector -->
+                <div class="space-y-2">
+                    <label class="block text-xs font-semibold text-slate-400 uppercase">Font Style</label>
+                    <select id="fontSelect" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-emerald-500" onchange="updatePreview()">
+                        <option value="'Oswald', sans-serif">Oswald (Bold Sports)</option>
+                        <option value="'Montserrat', sans-serif">Montserrat (Modern Clean)</option>
+                        <option value="'Teko', sans-serif">Teko (Aggressive Block)</option>
+                        <option value="'Inter', sans-serif">Inter (Standard UI)</option>
+                    </select>
+                </div>
+
+                <button onclick="exportBanner()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold py-3 rounded-xl transition shadow-lg shadow-emerald-900/20 cursor-pointer">
+                    Download Graphic (1200x630)
+                </button>
+            </div>
+
+            <!-- Live Preview Canvas Area -->
+            <div class="lg:col-span-2 flex flex-col items-center justify-center bg-slate-900 border border-slate-800 rounded-2xl p-6">
+                <div class="w-full flex justify-between items-center mb-4">
+                    <span class="text-xs text-slate-400 uppercase tracking-widest font-semibold">Live Preview Banner (16:9)</span>
+                    <span class="text-xs bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2.5 py-1 rounded-full">Modular Assets Ready</span>
+                </div>
+
+                <!-- The Visual Banner Preview -->
+                <div id="bannerCanvas" class="preview-canvas rounded-xl flex flex-col justify-between p-8 relative" style="background-image: url('https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=1200&q=80');">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/40 to-slate-950/60 z-0"></div>
+
+                    <div class="relative z-10 flex justify-between items-center">
+                        <span class="bg-rose-600 text-white font-bold px-3 py-1 rounded-md text-xs uppercase tracking-wider shadow">Match Result</span>
+                        <span class="text-xs text-slate-300 font-semibold tracking-wide uppercase">Official Feed Data</span>
+                    </div>
+
+                    <div class="relative z-10 flex items-center justify-around my-auto py-6">
+                        <div class="text-center flex flex-col items-center space-y-2 w-1/3">
+                            <div class="w-16 h-16 bg-white/10 backdrop-blur-md border border-white/20 rounded-full flex items-center justify-center p-2 shadow-lg">
+                                <span class="text-xs font-black text-white">HOME</span>
+                            </div>
+                            <span id="lblHome" class="text-lg font-bold text-white tracking-wide drop-shadow-md">FC Barcelona</span>
+                        </div>
+
+                        <div class="flex items-center space-x-3 bg-slate-900/80 backdrop-blur-md border border-slate-700/50 px-6 py-3 rounded-2xl shadow-2xl">
+                            <span id="lblHomeScore" class="text-4xl font-black text-emerald-400">2</span>
+                            <span class="text-xl font-bold text-slate-500">-</span>
+                            <span id="lblAwayScore" class="text-4xl font-black text-emerald-400">1</span>
+                        </div>
+
+                        <div class="text-center flex flex-col items-center space-y-2 w-1/3">
+                            <div class="w-16 h-16 bg-white/10 backdrop-blur-md border border-white/20 rounded-full flex items-center justify-center p-2 shadow-lg">
+                                <span class="text-xs font-black text-white">AWAY</span>
+                            </div>
+                            <span id="lblAway" class="text-lg font-bold text-white tracking-wide drop-shadow-md">Real Madrid</span>
+                        </div>
+                    </div>
+
+                    <div class="relative z-10 flex justify-between items-center text-xs text-slate-400 border-t border-white/10 pt-3">
+                        <span>Generated via Automated Sports Tool</span>
+                        <span class="font-semibold text-slate-300">Full-Time Final</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- HEADLESS CODE TAB -->
+        <div id="tab-headless" class="hidden space-y-6">
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+                <h2 class="text-lg font-semibold text-emerald-400 mb-2">Modular Headless Structure</h2>
+                <p class="text-sm text-slate-400 mb-4">Your backend python code is organized cleanly into <code>headless/generator.py</code> and modular scripts like <code>headless/scripts/background_selector.py</code>.</p>
+                <pre class="bg-slate-950 p-4 rounded-xl border border-slate-800 text-emerald-400 text-xs overflow-x-auto font-mono"><code># Run headlessly on Raspberry Pi, Mac, Linux or Windows:
+python headless/generator.py
+</code></pre>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        function updatePreview() {
+            const home = document.getElementById('homeName').value;
+            const away = document.getElementById('awayName').value;
+            const hScore = document.getElementById('homeScore').value;
+            const aScore = document.getElementById('awayScore').value;
+            const bgUrl = document.getElementById('bgSelect').value;
+            const fontStyle = document.getElementById('fontSelect').value;
+
+            document.getElementById('lblHome').innerText = home;
+            document.getElementById('lblAway').innerText = away;
+            document.getElementById('lblHomeScore').innerText = hScore;
+            document.getElementById('lblAwayScore').innerText = aScore;
+            
+            const canvas = document.getElementById('bannerCanvas');
+            canvas.style.backgroundImage = `url('${bgUrl}')`;
+            canvas.style.fontFamily = fontStyle;
+        }
+
+        function exportBanner() {
+            const banner = document.getElementById('bannerCanvas');
+            html2canvas(banner, { scale: 2, useCORS: true }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'match-banner.jpg';
+                link.href = canvas.toDataURL('image/jpeg', 0.95);
+                link.click();
+            });
+        }
+
+        function switchTab(tab) {
+            const studioTab = document.getElementById('tab-studio');
+            const headlessTab = document.getElementById('tab-headless');
+            const btnStudio = document.getElementById('btn-studio');
+            const btnHeadless = document.getElementById('btn-headless');
+
+            if (tab === 'studio') {
+                studioTab.classList.remove('hidden');
+                headlessTab.classList.add('hidden');
+                btnStudio.className = "px-4 py-2 text-sm font-semibold rounded-lg bg-emerald-600 text-white transition";
+                btnHeadless.className = "px-4 py-2 text-sm font-semibold rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 transition";
+            } else {
+                studioTab.classList.add('hidden');
+                headlessTab.classList.remove('hidden');
+                btnHeadless.className = "px-4 py-2 text-sm font-semibold rounded-lg bg-emerald-600 text-white transition";
+                btnStudio.className = "px-4 py-2 text-sm font-semibold rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 transition";
+            }
+        }
+    </script>
+</body>
+</html>

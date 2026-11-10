@@ -1,0 +1,25 @@
+{
+  "sport": "string",
+  "football": {
+    "leagueName": "string",
+    "teamA": {
+      "name": "string",
+      "logoName": "string",
+      "score": "string",
+      "scorers": "array"
+    },
+    "teamB": {
+      "name": "string",
+      "logoName": "string",
+      "score": "string",
+      "scorers": "array"
+    }
+  },
+  "formula1": {
+    "grandPrixName": "string",
+    "driver": "string",
+    "team": "string",
+    "position": "string",
+    "driverPhoto": "string"
+  }
+}
