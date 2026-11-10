@@ -1,7 +1,10 @@
 import os
 import requests
 from io import BytesIO
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw
+
+# Import our modular font selector from scripts/
+from font_selector import get_font_path, get_styled_font
 
 # Try importing cairosvg (Primary SVG renderer)
 try:
@@ -88,51 +91,38 @@ def render_football_graphic(sport_payload, bg_path, output_file_path, output_con
             # overlay = Image.new("RGBA", (width, height), (10, 15, 30, 180))
             
             # OPTION B (Lighter Dimness): Lower the alpha value (e.g., 100 instead of 180) for a brighter background
-            # overlay = Image.new("RGBA", (width, height), (10, 15, 30, 100))
+            overlay = Image.new("RGBA", (width, height), (10, 15, 30, 100))
             
             # OPTION C (No Dimness / Original Brightness): To remove dimness completely, comment out or delete 
             # the 'overlay =' line above, and comment out the 'canvas = Image.alpha_composite(...)' line below.
             # ----------------------------------
 
             canvas.paste(bg, (0, 0))
-            # canvas = Image.alpha_composite(canvas, overlay) # Remove or comment this line if using Option C (No Dimness)
+            canvas = Image.alpha_composite(canvas, overlay) # Remove or comment this line if using Option C (No Dimness)
         except Exception as e:
             print(f"Warning: Could not load background image: {e}")
 
     draw = ImageDraw.Draw(canvas)
     
-    # 2. Ensure font exists in headless/assets/fonts/
-    base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-    font_dir = os.path.join(base_dir, "assets", "fonts")
-    os.makedirs(font_dir, exist_ok=True)
-    font_path = os.path.join(font_dir, "Oswald-Bold.ttf")
-    
-    if not os.path.exists(font_path):
-        try:
-            print("Downloading Oswald font...")
-            font_url = "https://github.com/google/fonts/raw/main/ofl/oswald/Oswald%5Bwght%5D.ttf"
-            with open(font_path, "wb") as f:
-                f.write(requests.get(font_url, timeout=10).content)
-        except Exception:
-            pass
+    # 2. Pick ONE Quirky font path and ONE Normal font path for consistent styling across the entire image
+    quirky_path = get_font_path("quirky")
+    normal_path = get_font_path("normal")
 
-    try:
-        font_score = ImageFont.truetype(font_path, 80)
-        font_teams = ImageFont.truetype(font_path, 38)
-        font_small = ImageFont.truetype(font_path, 22)
-        font_scorers = ImageFont.truetype(font_path, 22)
-    except IOError:
-        font_score = font_teams = font_small = font_scorers = ImageFont.load_default()
+    # Load sizes using the exact same font files
+    font_score = get_styled_font(quirky_path, 80)
+    font_teams = get_styled_font(quirky_path, 38)
+    font_small = get_styled_font(normal_path, 22)
+    font_scorers = get_styled_font(normal_path, 22)
 
     league = sport_payload.get("leagueName", "FOOTBALL MATCH")
     team_a = sport_payload["teamA"]
     team_b = sport_payload["teamB"]
 
-    # 3. Draw Header Badge
+    # 3. Draw Header Badge (Normal Font)
     draw.rectangle([60, 45, 260, 90], fill=(225, 29, 72, 255))
     draw.text((75, 52), league.upper(), fill=(255, 255, 255, 255), font=font_small)
 
-    # 4. Draw Score Box Center
+    # 4. Draw Score Box Center (Quirky Font)
     score_text = f"{team_a['score']}  -  {team_b['score']}"
     score_bbox = draw.textbbox((0, 0), score_text, font=font_score)
     score_w = score_bbox[2] - score_bbox[0]
@@ -142,9 +132,9 @@ def render_football_graphic(sport_payload, bg_path, output_file_path, output_con
     draw.rounded_rectangle([score_x - 40, score_y - 15, score_x + score_w + 40, score_y + 90], radius=20, fill=(30, 41, 59, 230))
     draw.text((score_x, score_y), score_text, fill=(52, 211, 153, 255), font=font_score)
 
-    logos_dir = os.path.join(base_dir, "assets", "team-logos")
+    logos_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "assets", "team-logos"))
 
-    # 5. Team A (Left side) - Centered nicely around X=220
+    # 5. Team A (Left side) - Quirky Font for Name
     logo_a = load_team_logo(logos_dir, team_a.get("logoName", ""), size=(90, 90))
     if logo_a:
         canvas.paste(logo_a, (175, 170), logo_a)
@@ -154,13 +144,13 @@ def render_football_graphic(sport_payload, bg_path, output_file_path, output_con
     name_a_w = name_a_bbox[2] - name_a_bbox[0]
     draw.text((220 - (name_a_w / 2), 275), team_a_name, fill=(255, 255, 255, 255), font=font_teams)
     
-    # Scorers Team A (Clean bullet points)
+    # Scorers Team A (Normal Font)
     scorers_a = team_a.get("scorers", [])
     if scorers_a:
         scorers_a_text = "\n".join([f"- {s}" for s in scorers_a])
         draw.text((140, 330), scorers_a_text, fill=(203, 213, 225, 255), font=font_scorers)
 
-    # 6. Team B (Right side) - Centered nicely around X=980
+    # 6. Team B (Right side) - Quirky Font for Name
     logo_b = load_team_logo(logos_dir, team_b.get("logoName", ""), size=(90, 90))
     if logo_b:
         canvas.paste(logo_b, (935, 170), logo_b)
@@ -170,13 +160,13 @@ def render_football_graphic(sport_payload, bg_path, output_file_path, output_con
     name_b_w = name_b_bbox[2] - name_b_bbox[0]
     draw.text((980 - (name_b_w / 2), 275), team_b_name, fill=(255, 255, 255, 255), font=font_teams)
 
-    # Scorers Team B
+    # Scorers Team B (Normal Font)
     scorers_b = team_b.get("scorers", [])
     if scorers_b:
         scorers_b_text = "\n".join([f"- {s}" for s in scorers_b])
         draw.text((900, 330), scorers_b_text, fill=(203, 213, 225, 255), font=font_scorers)
 
-    # 7. Footer Branding
+    # 7. Footer Branding (Normal Font)
     draw.text((60, 560), "Automated Headless Engine • Powered by Python & PIL", fill=(148, 163, 184, 255), font=font_small)
 
     # 8. Save Output File
