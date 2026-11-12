@@ -1,10 +1,13 @@
 import os
 import requests
 from io import BytesIO
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageFont
 
-# Import our modular font selector from scripts/
-from font_selector import get_font_path, get_styled_font
+# Import font selection from scripts/ and layout engine from config/
+from font_selector import get_font_selection, get_styled_font
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+from config.font_layouts import get_font_layout
 
 # Try importing cairosvg (Primary SVG renderer)
 try:
@@ -87,32 +90,27 @@ def render_football_graphic(sport_payload, bg_path, output_file_path, output_con
             bg = Image.open(bg_path).resize((width, height)).convert("RGBA")
             
             # --- BACKGROUND DIMNESS CONTROL ---
-            # OPTION A (Current / Default): Dark blue tint with medium-high dimness (180 alpha) for best text readability
-            overlay = Image.new("RGBA", (width, height), (10, 15, 30, 140))
+            overlay = Image.new("RGBA", (width, height), (10, 15, 30, 120))
             
-            # OPTION B (Lighter Dimness): Lower the alpha value (e.g., 100 instead of 180) for a brighter background
-            # overlay = Image.new("RGBA", (width, height), (10, 15, 30, 100))
-            
-            # OPTION C (No Dimness / Original Brightness): To remove dimness completely, comment out or delete 
-            # the 'overlay =' line above, and comment out the 'canvas = Image.alpha_composite(...)' line below.
-            # ----------------------------------
-
             canvas.paste(bg, (0, 0))
-            canvas = Image.alpha_composite(canvas, overlay) # Remove or comment this line if using Option C (No Dimness)
+            canvas = Image.alpha_composite(canvas, overlay)
         except Exception as e:
             print(f"Warning: Could not load background image: {e}")
 
     draw = ImageDraw.Draw(canvas)
     
-    # 2. Pick ONE Quirky font path and ONE Normal font path for consistent styling across the entire image
-    quirky_path = get_font_path("quirky")
-    normal_path = get_font_path("normal")
+    # 2. Pick fonts and load configuration profile based on chosen quirky font
+    quirky_path, quirky_filename = get_font_selection("quirky")
+    normal_path, _ = get_font_selection("normal")
 
-    # Load sizes using the exact same font files
-    font_score = get_styled_font(quirky_path, 80)
-    font_teams = get_styled_font(quirky_path, 38)
+    # Pull font layout tuning profile for legendary layout adjustments
+    layout = get_font_layout(quirky_filename)
+
+    # Load sizes & colors dynamically from config layout profile
+    font_score = get_styled_font(quirky_path, layout["score_size"])
+    font_teams = get_styled_font(quirky_path, layout["team_size"])
     font_small = get_styled_font(normal_path, 22)
-    font_scorers = get_styled_font(normal_path, 22)
+    font_scorers = get_styled_font(normal_path, layout["scorers_size"])
 
     league = sport_payload.get("leagueName", "FOOTBALL MATCH")
     team_a = sport_payload["teamA"]
@@ -122,15 +120,15 @@ def render_football_graphic(sport_payload, bg_path, output_file_path, output_con
     draw.rectangle([60, 45, 260, 90], fill=(225, 29, 72, 255))
     draw.text((75, 52), league.upper(), fill=(255, 255, 255, 255), font=font_small)
 
-    # 4. Draw Score Box Center (Quirky Font)
+    # 4. Draw Score Box Center (Quirky Font & Config Coordinates)
     score_text = f"{team_a['score']}  -  {team_b['score']}"
     score_bbox = draw.textbbox((0, 0), score_text, font=font_score)
     score_w = score_bbox[2] - score_bbox[0]
     score_x = (width - score_w) / 2
-    score_y = 220
+    score_y = layout["score_y"]
     
-    draw.rounded_rectangle([score_x - 40, score_y - 15, score_x + score_w + 40, score_y + 90], radius=20, fill=(30, 41, 59, 230))
-    draw.text((score_x, score_y), score_text, fill=(52, 211, 153, 255), font=font_score)
+    # draw.rounded_rectangle([score_x - 40, score_y - 15, score_x + score_w + 40, score_y + 90], radius=20, fill=(30, 41, 59, 230))
+    draw.text((score_x, score_y), score_text, fill=layout["score_color"], font=font_score)
 
     logos_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "assets", "team-logos"))
 
@@ -142,13 +140,13 @@ def render_football_graphic(sport_payload, bg_path, output_file_path, output_con
     team_a_name = team_a["name"]
     name_a_bbox = draw.textbbox((0, 0), team_a_name, font=font_teams)
     name_a_w = name_a_bbox[2] - name_a_bbox[0]
-    draw.text((220 - (name_a_w / 2), 275), team_a_name, fill=(255, 255, 255, 255), font=font_teams)
+    draw.text((220 - (name_a_w / 2), layout["team_y"]), team_a_name, fill=layout["team_color"], font=font_teams)
     
     # Scorers Team A (Normal Font)
     scorers_a = team_a.get("scorers", [])
     if scorers_a:
         scorers_a_text = "\n".join([f"- {s}" for s in scorers_a])
-        draw.text((140, 330), scorers_a_text, fill=(203, 213, 225, 255), font=font_scorers)
+        draw.text((140, layout["scorers_y"]), scorers_a_text, fill=layout["scorers_color"], font=font_scorers)
 
     # 6. Team B (Right side) - Quirky Font for Name
     logo_b = load_team_logo(logos_dir, team_b.get("logoName", ""), size=(90, 90))
@@ -158,13 +156,13 @@ def render_football_graphic(sport_payload, bg_path, output_file_path, output_con
     team_b_name = team_b["name"]
     name_b_bbox = draw.textbbox((0, 0), team_b_name, font=font_teams)
     name_b_w = name_b_bbox[2] - name_b_bbox[0]
-    draw.text((980 - (name_b_w / 2), 275), team_b_name, fill=(255, 255, 255, 255), font=font_teams)
+    draw.text((980 - (name_b_w / 2), layout["team_y"]), team_b_name, fill=layout["team_color"], font=font_teams)
 
     # Scorers Team B (Normal Font)
     scorers_b = team_b.get("scorers", [])
     if scorers_b:
         scorers_b_text = "\n".join([f"- {s}" for s in scorers_b])
-        draw.text((900, 330), scorers_b_text, fill=(203, 213, 225, 255), font=font_scorers)
+        draw.text((900, layout["scorers_y"]), scorers_b_text, fill=layout["scorers_color"], font=font_scorers)
 
     # 7. Footer Branding (Normal Font)
     draw.text((60, 560), "Automated Headless Engine • Powered by Python & PIL", fill=(148, 163, 184, 255), font=font_small)
