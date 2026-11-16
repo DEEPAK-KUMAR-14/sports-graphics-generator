@@ -133,11 +133,11 @@ def render_fixture_graphic(sport_payload, bg_path, output_file_path, output_conf
     logos_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "assets", "team-logos"))
 
     # 4. Team A (Left)
-    logo_a_size = 165
+    logo_a_size = 175
     logo_a_x = MARGIN + 35
     logo_a = load_team_logo(logos_dir, team_a.get("logoName", ""), size=(logo_a_size, logo_a_size))
     if logo_a:
-        canvas.paste(logo_a, (logo_a_x, 145), logo_a)
+        canvas.paste(logo_a, (logo_a_x, 155), logo_a)
         
     team_a_name_wrapped = wrap_team_name(team_a["name"], max_chars_per_line=15)
     name_a_bbox = draw.multiline_textbbox((0, 0), team_a_name_wrapped, font=font_teams, align="center")
@@ -149,10 +149,10 @@ def render_fixture_graphic(sport_payload, bg_path, output_file_path, output_conf
     )
 
     # 5. Team B (Right)
-    logo_b_x = width - MARGIN - logo_a_size - 35
+    logo_b_x = width - MARGIN - logo_a_size - 70 #35*2 = 70
     logo_b = load_team_logo(logos_dir, team_b.get("logoName", ""), size=(logo_a_size, logo_a_size))
     if logo_b:
-        canvas.paste(logo_b, (logo_b_x, 145), logo_b)
+        canvas.paste(logo_b, (logo_b_x, 155), logo_b)
         
     team_b_name_wrapped = wrap_team_name(team_b["name"], max_chars_per_line=15)
     name_b_bbox = draw.multiline_textbbox((0, 0), team_b_name_wrapped, font=font_teams, align="center")
@@ -170,7 +170,7 @@ def render_fixture_graphic(sport_payload, bg_path, output_file_path, output_conf
     hook_bbox = draw.textbbox((0, 0), hook_text, font=font_hook)
     hook_w = hook_bbox[2] - hook_bbox[0]
     hook_x = (width - hook_w) / 2
-    hook_y = 500  # Proportionally positioned near the bottom margin on 675px canvas
+    hook_y = 540  # Proportionally positioned near the bottom margin on 675px canvas
     
     draw.text((hook_x, hook_y), hook_text, fill=(250, 204, 21, 255), font=font_hook) # Trophy Gold
 

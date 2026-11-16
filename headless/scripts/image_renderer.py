@@ -187,9 +187,9 @@ def render_football_graphic(sport_payload, bg_path, output_file_path, output_con
     # ----------------------------------------------------
     # 5. Team A (Left side) - Perfectly Balanced (165px Logo at y=145)
     # ----------------------------------------------------
-    logo_a_size = 165  
+    logo_a_size = 175  
     logo_a_x = MARGIN + 35  
-    logo_a_y = 145     # Perfectly spaced below header badges
+    logo_a_y = 155     # Perfectly spaced below header badges
     
     logo_a = load_team_logo(logos_dir, team_a.get("logoName", ""), size=(logo_a_size, logo_a_size))
     if logo_a:
@@ -212,9 +212,9 @@ def render_football_graphic(sport_payload, bg_path, output_file_path, output_con
     # ----------------------------------------------------
     # 6. Team B (Right side) - Perfectly Balanced (165px Logo at y=145)
     # ----------------------------------------------------
-    logo_b_size = 165  
-    logo_b_x = width - MARGIN - logo_a_size - 35  
-    logo_b_y = 145     # Perfectly spaced below header badges
+    logo_b_size = 175  
+    logo_b_x = width - MARGIN - logo_a_size - 70 #35*2 = 70
+    logo_b_y = 155     # Perfectly spaced below header badges
     
     logo_b = load_team_logo(logos_dir, team_b.get("logoName", ""), size=(logo_b_size, logo_b_size))
     if logo_b:

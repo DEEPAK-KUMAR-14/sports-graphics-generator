@@ -36,11 +36,11 @@ FONT_LAYOUTS = {
     # "score_size": 140, "score_y": 195, "score_color": (250, 204, 21, 255) [Trophy Gold]
     # "team_size": 52, "team_y": 315, "team_color": (255, 255, 255, 255) [Crisp White]
     "bangers": {
-        "score_size": 140,
+        "score_size": 160,
         "score_y": 195,
         "score_color": (250, 204, 21, 255),      # Trophy Gold
-        "team_size": 52,                         # Bold & legible mobile font size
-        "team_y": 315,                           # Positioned directly below the 165px logo (ends at 295)
+        "team_size": 66,                         # Bold & legible mobile font size
+        "team_y": 360,                           # Positioned directly below the 165px logo (ends at 295)
         "team_color": (255, 255, 255, 255),
     },
 
