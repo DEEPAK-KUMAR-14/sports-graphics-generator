@@ -42,16 +42,18 @@ FONT_LAYOUTS = {
 
     # --- BANGERS ---
     "bangers": {
-        "score_size": 110,
-        "score_y": 205,
+        "score_size": 140,
+        "score_y": 195,
         "score_color": (250, 204, 21, 255),      # Trophy Gold
-        "team_size": 60,
-        "team_y": 270,
+        "team_size": 54,                         # Slightly balanced for 60px visual weight
+        "team_y": 310,                           # Pushed safely below the 150px logo (ends at 295)
         "team_color": (255, 255, 255, 255),
-        "scorers_size": 30,
-        "scorers_y": 340,
+        "scorers_size": 28,
+        "scorers_y": 390,                        # Pushed down below the multi-line team name
         "scorers_color": (203, 213, 225, 255),
     },
+
+    #"score_color": (60, 221, 133, 255),       # Vibrant Mint Green (#3cdd85)
 
     # --- BBHBOGLE ---
     "bbhbogle": {
