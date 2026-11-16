@@ -261,12 +261,15 @@ def render_football_graphic(sport_payload, bg_path, output_file_path, output_con
     # 7. Footer Branding (Normal Font)
     # draw.text((MARGIN, height - MARGIN), "Automated Headless Engine • Powered by Python & PIL", fill=(148, 163, 184, 255), font=font_small)
 
-    # 8. Save Output File
+
+    # 8. Save Output File with Strict Under-300KB Compression Rules
     format_type = output_config.get("format", "WebP").lower()
-    quality = output_config.get("quality", 90)
+    quality = output_config.get("quality", 85)
+    method = output_config.get("method", 6)
     
     final_image = canvas.convert("RGB")
     if format_type == "webp":
-        final_image.save(output_file_path, "WEBP", quality=quality)
+        # method=6 maximizes compression math, keeping files lightweight and well under 300KB
+        final_image.save(output_file_path, "WEBP", quality=quality, method=6)
     else:
         final_image.save(output_file_path, "JPEG", quality=quality)

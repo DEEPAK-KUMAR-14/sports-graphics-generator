@@ -3,12 +3,14 @@
     "format": "WebP",
     "width": 1200,
     "height": 630,
-    "quality": 90
+    "quality": 85,
+    "method": 6
   },
   "formula1": {
     "format": "WebP",
     "width": 1200,
     "height": 630,
-    "quality": 90
+    "quality": 85,
+    "method": 6
   }
 }
