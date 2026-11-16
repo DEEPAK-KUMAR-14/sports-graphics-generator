@@ -5,7 +5,8 @@ import json
 # Add scripts directory to python path
 sys.path.append(os.path.join(os.path.dirname(__file__), "scripts"))
 from background_selector import get_random_background
-from image_renderer import render_football_graphic
+from image_renderer import render_football_graphic as render_scorecard
+from fixture_image_renderer import render_fixture_graphic
 
 def process_match_files():
     base_dir = os.path.dirname(__file__)
@@ -48,7 +49,7 @@ def process_match_files():
             continue
 
         sport_payload = match_data[sport_type]
-        sport_conf = output_config.get(sport_type, {"format": "WebP", "quality": 90})
+        sport_conf = output_config.get(sport_type, {"format": "WebP", "quality": 85})
         
         # Determine file extension based on format configuration
         output_ext = ".webp" if sport_conf.get("format", "WebP").lower() == "webp" else ".jpg"
@@ -59,10 +60,18 @@ def process_match_files():
         # Get random background using our module
         random_bg_path = get_random_background()
 
-        # Render graphic based on sport type
+        # Render graphic based on sport type and imageType sub-category
         if sport_type == "football":
-            render_football_graphic(sport_payload, random_bg_path, output_file_path, sport_conf)
-            print(f"✅ Success! Football graphic generated: output/{output_filename}")
+            image_type = sport_payload.get("imageType", "scorecard").strip().lower()
+            
+            if image_type == "fixture":
+                print("🛡️ Routing to Fixture Renderer (fixture_image_renderer.py)...")
+                render_fixture_graphic(sport_payload, random_bg_path, output_file_path, sport_conf)
+                print(f"✅ Success! Football fixture graphic generated: output/{output_filename}")
+            else:
+                print("⚽ Routing to Scorecard Renderer (image_renderer.py)...")
+                render_scorecard(sport_payload, random_bg_path, output_file_path, sport_conf)
+                print(f"✅ Success! Football scorecard graphic generated: output/{output_filename}")
             
         elif sport_type == "formula1":
             # Future expansion slot for Formula 1 rendering module!

@@ -2,17 +2,23 @@
   "sport": "string",
   "football": {
     "leagueName": "string",
+    "imageType": "string",
+    "fixtureHookText": "string",
     "teamA": {
       "name": "string",
       "logoName": "string",
       "score": "string",
-      "scorers": "array"
+      "scorers": [
+        "string"
+      ]
     },
     "teamB": {
       "name": "string",
       "logoName": "string",
       "score": "string",
-      "scorers": "array"
+      "scorers": [
+        "string"
+      ]
     }
   },
   "formula1": {
@@ -23,3 +29,5 @@
     "driverPhoto": "string"
   }
 }
+
+

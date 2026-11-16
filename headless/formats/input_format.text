@@ -1,0 +1,27 @@
+{
+  "sport": "football | formula1",
+  "football": {
+    "leagueName": "Name of the league or tournament (e.g., PREMIER LEAGUE)",
+    "imageType": "scorecard | fixture",
+    "fixtureHookText": "Optional center hook text for fixtures (e.g., FIXTURES • H2H • LINEUP PREDICTION)",
+    "teamA": {
+      "name": "Team A full name (auto-wrapped at 15 chars)",
+      "logoName": "Filename/ID of team logo (supports svg/png without extension)",
+      "score": "Match score (Ignored and automatically set to 'VS' if imageType is 'fixture')",
+      "scorers": ["List of goalscorers"] // Omitted or ignored automatically if imageType is 'fixture'
+    },
+    "teamB": {
+      "name": "Team B full name",
+      "logoName": "Filename/ID of team logo",
+      "score": "Match score",
+      "scorers": ["List of goalscorers"]
+    }
+  },
+  "formula1": {
+    "grandPrixName": "Grand Prix name",
+    "driver": "Driver name",
+    "team": "Team name",
+    "position": "Race finish position",
+    "driverPhoto": "Filename or URL of driver asset"
+  }
+}
