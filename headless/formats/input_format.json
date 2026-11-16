@@ -1,33 +1,18 @@
 {
-  "sport": "string",
+  "sport": "football",
   "football": {
     "leagueName": "string",
-    "imageType": "string",
+    "imageType": "scorecard | fixture",
     "fixtureHookText": "string",
     "teamA": {
       "name": "string",
       "logoName": "string",
-      "score": "string",
-      "scorers": [
-        "string"
-      ]
+      "score": "string"
     },
     "teamB": {
       "name": "string",
       "logoName": "string",
-      "score": "string",
-      "scorers": [
-        "string"
-      ]
+      "score": "string"
     }
-  },
-  "formula1": {
-    "grandPrixName": "string",
-    "driver": "string",
-    "team": "string",
-    "position": "string",
-    "driverPhoto": "string"
   }
 }
-
-

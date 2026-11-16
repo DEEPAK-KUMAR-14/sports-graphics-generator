@@ -7,11 +7,8 @@ FONT_LAYOUTS = {
         "score_y": 215,
         "score_color": (52, 211, 153, 255),       # Vibrant Mint Green
         "team_size": 38,
-        "team_y": 275,
+        "team_y": 315,
         "team_color": (255, 255, 255, 255),      # Crisp White
-        "scorers_size": 20,
-        "scorers_y": 335,
-        "scorers_color": (203, 213, 225, 255),   # Slate Light Gray
     },
 
     # --- ASIMOVIAN ---
@@ -20,11 +17,8 @@ FONT_LAYOUTS = {
         "score_y": 220,
         "score_color": (52, 211, 153, 255),
         "team_size": 40,
-        "team_y": 278,
+        "team_y": 315,
         "team_color": (255, 255, 255, 255),
-        "scorers_size": 30,
-        "scorers_y": 380,
-        "scorers_color": (203, 213, 225, 255),
     },
 
     # --- AUDIOWIDE ---
@@ -33,27 +27,22 @@ FONT_LAYOUTS = {
         "score_y": 225,
         "score_color": (56, 189, 248, 255),      # Electric Sky Blue
         "team_size": 34,
-        "team_y": 280,
+        "team_y": 315,
         "team_color": (255, 255, 255, 255),
-        "scorers_size": 20,
-        "scorers_y": 335,
-        "scorers_color": (203, 213, 225, 255),
     },
 
-    # --- BANGERS ---
+    # --- BANGERS (PRIMARY FONT - OPTIMIZED FOR MOBILE LEGIBILITY) ---
+    # Multi-comment safety block preserving your exact primary styling setup:
+    # "score_size": 140, "score_y": 195, "score_color": (250, 204, 21, 255) [Trophy Gold]
+    # "team_size": 52, "team_y": 315, "team_color": (255, 255, 255, 255) [Crisp White]
     "bangers": {
         "score_size": 140,
         "score_y": 195,
         "score_color": (250, 204, 21, 255),      # Trophy Gold
-        "team_size": 54,                         # Slightly balanced for 60px visual weight
-        "team_y": 310,                           # Pushed safely below the 150px logo (ends at 295)
+        "team_size": 52,                         # Bold & legible mobile font size
+        "team_y": 315,                           # Positioned directly below the 165px logo (ends at 295)
         "team_color": (255, 255, 255, 255),
-        "scorers_size": 28,
-        "scorers_y": 390,                        # Pushed down below the multi-line team name
-        "scorers_color": (203, 213, 225, 255),
     },
-
-    #"score_color": (60, 221, 133, 255),       # Vibrant Mint Green (#3cdd85)
 
     # --- BBHBOGLE ---
     "bbhbogle": {
@@ -61,11 +50,8 @@ FONT_LAYOUTS = {
         "score_y": 215,
         "score_color": (52, 211, 153, 255),
         "team_size": 38,
-        "team_y": 275,
+        "team_y": 315,
         "team_color": (255, 255, 255, 255),
-        "scorers_size": 20,
-        "scorers_y": 335,
-        "scorers_color": (203, 213, 225, 255),
     },
 
     # --- BLACK OPS ONE ---
@@ -74,11 +60,8 @@ FONT_LAYOUTS = {
         "score_y": 220,
         "score_color": (244, 63, 94, 255),      # Bold Red Accent
         "team_size": 35,
-        "team_y": 278,
+        "team_y": 315,
         "team_color": (255, 255, 255, 255),
-        "scorers_size": 20,
-        "scorers_y": 335,
-        "scorers_color": (203, 213, 225, 255),
     },
 
     # --- BUNGEE ---
@@ -87,11 +70,8 @@ FONT_LAYOUTS = {
         "score_y": 230,
         "score_color": (250, 204, 21, 255),
         "team_size": 30,
-        "team_y": 285,
+        "team_y": 315,
         "team_color": (255, 255, 255, 255),
-        "scorers_size": 20,
-        "scorers_y": 335,
-        "scorers_color": (203, 213, 225, 255),
     },
 
     # --- CINZEL DECORATIVE ---
@@ -100,11 +80,8 @@ FONT_LAYOUTS = {
         "score_y": 220,
         "score_color": (250, 204, 21, 255),
         "team_size": 36,
-        "team_y": 278,
+        "team_y": 315,
         "team_color": (255, 255, 255, 255),
-        "scorers_size": 20,
-        "scorers_y": 335,
-        "scorers_color": (203, 213, 225, 255),
     },
 
     # --- MERIENDA ---
@@ -113,11 +90,8 @@ FONT_LAYOUTS = {
         "score_y": 222,
         "score_color": (52, 211, 153, 255),
         "team_size": 34,
-        "team_y": 278,
+        "team_y": 315,
         "team_color": (255, 255, 255, 255),
-        "scorers_size": 20,
-        "scorers_y": 335,
-        "scorers_color": (203, 213, 225, 255),
     },
 
     # --- MOMO TRUST DISPLAY ---
@@ -126,13 +100,9 @@ FONT_LAYOUTS = {
         "score_y": 220,
         "score_color": (52, 211, 153, 255),
         "team_size": 36,
-        "team_y": 275,
+        "team_y": 315,
         "team_color": (255, 255, 255, 255),
-        "scorers_size": 20,
-        "scorers_y": 335,
-        "scorers_color": (203, 213, 225, 255),
     },
-
 
     # --- OUTFIT ---
     "outfit": {
@@ -140,11 +110,8 @@ FONT_LAYOUTS = {
         "score_y": 215,
         "score_color": (52, 211, 153, 255),
         "team_size": 38,
-        "team_y": 275,
+        "team_y": 315,
         "team_color": (255, 255, 255, 255),
-        "scorers_size": 20,
-        "scorers_y": 335,
-        "scorers_color": (203, 213, 225, 255),
     },
 
     # --- PERMANENT MARKER ---
@@ -153,11 +120,8 @@ FONT_LAYOUTS = {
         "score_y": 218,
         "score_color": (250, 204, 21, 255),
         "team_size": 36,
-        "team_y": 276,
+        "team_y": 315,
         "team_color": (255, 255, 255, 255),
-        "scorers_size": 20,
-        "scorers_y": 335,
-        "scorers_color": (203, 213, 225, 255),
     },
 
     # --- SCIENCE GOTHIC ---
@@ -166,11 +130,8 @@ FONT_LAYOUTS = {
         "score_y": 216,
         "score_color": (52, 211, 153, 255),
         "team_size": 37,
-        "team_y": 275,
+        "team_y": 315,
         "team_color": (255, 255, 255, 255),
-        "scorers_size": 20,
-        "scorers_y": 335,
-        "scorers_color": (203, 213, 225, 255),
     }
 }
 
@@ -186,17 +147,3 @@ def get_font_layout(font_filename):
             return layout
             
     return FONT_LAYOUTS["default"]
-
-
-
-# "yourfontname": {
-#         "score_size": 80,
-#         "score_y": 215,
-#         "score_color": (52, 211, 153, 255),
-#         "team_size": 38,
-#         "team_y": 275,
-#         "team_color": (255, 255, 255, 255),
-#         "scorers_size": 20,
-#         "scorers_y": 335,
-#         "scorers_color": (203, 213, 225, 255),
-#     },

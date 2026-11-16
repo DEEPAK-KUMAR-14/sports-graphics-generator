@@ -78,7 +78,7 @@ def resize_and_crop_background(img, target_width, target_height):
     return img.crop((left, top, left + target_width, top + target_height))
 
 def render_fixture_graphic(sport_payload, bg_path, output_file_path, output_config):
-    width, height = 1200, 630
+    width, height = 1200, 675  # Upgraded to 16:9 widescreen format for news feeds
     canvas = Image.new("RGBA", (width, height), (15, 23, 42, 255))
     MARGIN = 60
     
@@ -122,19 +122,19 @@ def render_fixture_graphic(sport_payload, bg_path, output_file_path, output_conf
     draw.rectangle([brand_right - brand_w - 40, badge_y, brand_right, badge_y + 45], fill=(0, 28, 214, 255))
     draw.text((brand_right - brand_w - 20, badge_y + 9), brand_text, fill=(255, 255, 255, 255), font=font_small)
 
-    # 3. Center "VS" Element
+    # 3. Center "VS" Element (Vertically balanced for 675px height)
     score_text = "VS"
     score_bbox = draw.textbbox((0, 0), score_text, font=font_score)
     score_w = score_bbox[2] - score_bbox[0]
     score_x = (width - score_w) / 2
-    score_y = layout["score_y"]
+    score_y = layout["score_y"] + 20
     draw.text((score_x, score_y), score_text, fill=layout["score_color"], font=font_score)
 
     logos_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "assets", "team-logos"))
 
     # 4. Team A (Left)
-    logo_a_size = 150
-    logo_a_x = MARGIN + 40
+    logo_a_size = 165
+    logo_a_x = MARGIN + 35
     logo_a = load_team_logo(logos_dir, team_a.get("logoName", ""), size=(logo_a_size, logo_a_size))
     if logo_a:
         canvas.paste(logo_a, (logo_a_x, 145), logo_a)
@@ -144,12 +144,12 @@ def render_fixture_graphic(sport_payload, bg_path, output_file_path, output_conf
     name_a_w = name_a_bbox[2] - name_a_bbox[0]
     team_a_center_x = logo_a_x + (logo_a_size / 2)
     draw.multiline_text(
-        (max(MARGIN, team_a_center_x - (name_a_w / 2)), layout["team_y"]), 
+        (max(MARGIN, team_a_center_x - (name_a_w / 2)), layout["team_y"] + 20), 
         team_a_name_wrapped, fill=layout["team_color"], font=font_teams, align="center"
     )
 
     # 5. Team B (Right)
-    logo_b_x = width - MARGIN - logo_a_size - 40
+    logo_b_x = width - MARGIN - logo_a_size - 35
     logo_b = load_team_logo(logos_dir, team_b.get("logoName", ""), size=(logo_a_size, logo_a_size))
     if logo_b:
         canvas.paste(logo_b, (logo_b_x, 145), logo_b)
@@ -159,22 +159,18 @@ def render_fixture_graphic(sport_payload, bg_path, output_file_path, output_conf
     name_b_w = name_b_bbox[2] - name_b_bbox[0]
     team_b_center_x = logo_b_x + (logo_a_size / 2)
     draw.multiline_text(
-        (team_b_center_x - (name_b_w / 2), layout["team_y"]), 
+        (team_b_center_x - (name_b_w / 2), layout["team_y"] + 20), 
         team_b_name_wrapped, fill=layout["team_color"], font=font_teams, align="center"
     )
 
-    # 6. Fixture Hook Text (Cleanly centered horizontally, adjustable size & vertical position)
+    # 6. Fixture Hook Text (Cleanly centered horizontally, adjusted for 675px height)
     hook_text = sport_payload.get("fixtureHookText", "MATCHDAY PREVIEW • H2H & LINEUP").upper()
-    
-    # 🎛️ Adjust font size here (e.g., change 24 to 20 for smaller, or 30 for larger)
     font_hook = get_styled_font(normal_path, 56)
     
     hook_bbox = draw.textbbox((0, 0), hook_text, font=font_hook)
     hook_w = hook_bbox[2] - hook_bbox[0]
     hook_x = (width - hook_w) / 2
-    
-    # 🎛️ Adjust vertical position here (Higher number = further down towards the bottom margin)
-    hook_y = 480
+    hook_y = 500  # Proportionally positioned near the bottom margin on 675px canvas
     
     draw.text((hook_x, hook_y), hook_text, fill=(250, 204, 21, 255), font=font_hook) # Trophy Gold
 

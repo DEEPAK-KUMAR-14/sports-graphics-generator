@@ -108,7 +108,7 @@ def resize_and_crop_background(img, target_width, target_height):
     return img.crop((left, top, right, bottom))
 
 def render_football_graphic(sport_payload, bg_path, output_file_path, output_config):
-    width, height = 1200, 630
+    width, height = 1200, 675  # Optimized 16:9 aspect ratio for Google News / MSN feeds
     canvas = Image.new("RGBA", (width, height), (15, 23, 42, 255))
     
     # Define Strict 60px Safe Margin Boundary
@@ -141,7 +141,6 @@ def render_football_graphic(sport_payload, bg_path, output_file_path, output_con
     font_score = get_styled_font(quirky_path, layout["score_size"])
     font_teams = get_styled_font(quirky_path, layout["team_size"])
     font_small = get_styled_font(normal_path, 22)
-    font_scorers = get_styled_font(normal_path, layout["scorers_size"])
 
     league = sport_payload.get("leagueName", "FOOTBALL MATCH")
     team_a = sport_payload["teamA"]
@@ -173,19 +172,12 @@ def render_football_graphic(sport_payload, bg_path, output_file_path, output_con
     draw.rectangle([brand_left, brand_y, brand_right, brand_bottom], fill=(0, 28, 214, 255))
     draw.text((brand_left + 20, brand_y + 9), brand_text, fill=(255, 255, 255, 255), font=font_small)
 
-    # 4. Calculate Score Box Coordinates & Dimensions early for Splash alignment
+    # 4. Calculate Score Box Coordinates & Dimensions (Balanced vertically for 675 height)
     score_text = f"{team_a['score']}  -  {team_b['score']}"
     score_bbox = draw.textbbox((0, 0), score_text, font=font_score)
     score_w = score_bbox[2] - score_bbox[0]
     score_x = (width - score_w) / 2
-    score_y = layout["score_y"]
-
-    # --- 🎨 4.5. APPLY PAINT SPLASH BEHIND THE SCORE BOX ---
-    # splash_tint = (layout["score_color"][0], layout["score_color"][1], layout["score_color"][2], 160)
-    # canvas = apply_paint_splash(canvas, score_x, score_y, score_w, splash_color=splash_tint)
-    
-    # Re-initialize draw object because canvas composition changed layer state
-    # draw = ImageDraw.Draw(canvas)
+    score_y = layout["score_y"] + 20
 
     # Draw Score Box Center Text
     draw.text((score_x, score_y), score_text, fill=layout["score_color"], font=font_score)
@@ -193,11 +185,11 @@ def render_football_graphic(sport_payload, bg_path, output_file_path, output_con
     logos_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "assets", "team-logos"))
 
     # ----------------------------------------------------
-    # 5. Team A (Left side) - Bounded by Safe Margin
+    # 5. Team A (Left side) - Perfectly Balanced (165px Logo at y=145)
     # ----------------------------------------------------
-    logo_a_size = 150
-    logo_a_x = MARGIN + 40  
-    logo_a_y = 145
+    logo_a_size = 165  
+    logo_a_x = MARGIN + 35  
+    logo_a_y = 145     # Perfectly spaced below header badges
     
     logo_a = load_team_logo(logos_dir, team_a.get("logoName", ""), size=(logo_a_size, logo_a_size))
     if logo_a:
@@ -207,30 +199,22 @@ def render_football_graphic(sport_payload, bg_path, output_file_path, output_con
     
     name_a_bbox = draw.multiline_textbbox((0, 0), team_a_name_wrapped, font=font_teams, align="center")
     name_a_w = name_a_bbox[2] - name_a_bbox[0]
-    name_a_h = name_a_bbox[3] - name_a_bbox[1]
     
     team_a_center_x = logo_a_x + (logo_a_size / 2)
     draw.multiline_text(
-        (max(MARGIN, team_a_center_x - (name_a_w / 2)), layout["team_y"]), 
+        (max(MARGIN, team_a_center_x - (name_a_w / 2)), layout["team_y"] + 20), 
         team_a_name_wrapped, 
         fill=layout["team_color"], 
         font=font_teams, 
         align="center"
     )
-    
-    # Scorers Team A
-    scorers_a = team_a.get("scorers", [])
-    if scorers_a:
-        scorers_a_text = "\n".join([f"- {s}" for s in scorers_a])
-        scorers_a_y = layout["team_y"] + name_a_h + 15
-        draw.text((MARGIN, scorers_a_y), scorers_a_text, fill=layout["scorers_color"], font=font_scorers)
 
     # ----------------------------------------------------
-    # 6. Team B (Right side) - Bounded by Safe Margin
+    # 6. Team B (Right side) - Perfectly Balanced (165px Logo at y=145)
     # ----------------------------------------------------
-    logo_b_size = 150
-    logo_b_x = width - MARGIN - logo_a_size - 40  
-    logo_b_y = 145
+    logo_b_size = 165  
+    logo_b_x = width - MARGIN - logo_a_size - 35  
+    logo_b_y = 145     # Perfectly spaced below header badges
     
     logo_b = load_team_logo(logos_dir, team_b.get("logoName", ""), size=(logo_b_size, logo_b_size))
     if logo_b:
@@ -240,27 +224,15 @@ def render_football_graphic(sport_payload, bg_path, output_file_path, output_con
     
     name_b_bbox = draw.multiline_textbbox((0, 0), team_b_name_wrapped, font=font_teams, align="center")
     name_b_w = name_b_bbox[2] - name_b_bbox[0]
-    name_b_h = name_b_bbox[3] - name_b_bbox[1]
     
     team_b_center_x = logo_b_x + (logo_b_size / 2)
     draw.multiline_text(
-        (team_b_center_x - (name_b_w / 2), layout["team_y"]), 
+        (team_b_center_x - (name_b_w / 2), layout["team_y"] + 20), 
         team_b_name_wrapped, 
         fill=layout["team_color"], 
         font=font_teams, 
         align="center"
     )
-
-    # Scorers Team B
-    scorers_b = team_b.get("scorers", [])
-    if scorers_b:
-        scorers_b_text = "\n".join([f"- {s}" for s in scorers_b])
-        scorers_b_y = layout["team_y"] + name_b_h + 15
-        draw.text((logo_b_x - 10, scorers_b_y), scorers_b_text, fill=layout["scorers_color"], font=font_scorers)
-
-    # 7. Footer Branding (Normal Font)
-    # draw.text((MARGIN, height - MARGIN), "Automated Headless Engine • Powered by Python & PIL", fill=(148, 163, 184, 255), font=font_small)
-
 
     # 8. Save Output File with Strict Under-300KB Compression Rules
     format_type = output_config.get("format", "WebP").lower()
@@ -269,7 +241,6 @@ def render_football_graphic(sport_payload, bg_path, output_file_path, output_con
     
     final_image = canvas.convert("RGB")
     if format_type == "webp":
-        # method=6 maximizes compression math, keeping files lightweight and well under 300KB
-        final_image.save(output_file_path, "WEBP", quality=quality, method=6)
+        final_image.save(output_file_path, "WEBP", quality=quality, method=method)
     else:
         final_image.save(output_file_path, "JPEG", quality=quality)
