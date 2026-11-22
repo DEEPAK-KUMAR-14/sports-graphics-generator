@@ -1,6 +1,7 @@
 {
   "sport": "football",
   "football": {
+    "matchWeekOrDay": "string",
     "leagueName": "string",
     "imageType": "scorecard | fixture",
     "fixtureHookText": "string",

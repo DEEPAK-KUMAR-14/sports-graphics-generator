@@ -143,6 +143,7 @@ def render_football_graphic(sport_payload, bg_path, output_file_path, output_con
     font_small = get_styled_font(normal_path, 22)
 
     league = sport_payload.get("leagueName", "FOOTBALL MATCH")
+    match_week_or_day = sport_payload.get("matchWeekOrDay", "").strip()
     team_a = sport_payload["teamA"]
     team_b = sport_payload["teamB"]
 
@@ -225,7 +226,7 @@ def render_football_graphic(sport_payload, bg_path, output_file_path, output_con
     name_b_bbox = draw.multiline_textbbox((0, 0), team_b_name_wrapped, font=font_teams, align="center")
     name_b_w = name_b_bbox[2] - name_b_bbox[0]
     
-    team_b_center_x = logo_b_x + (logo_b_size / 2)
+    team_b_center_x = logo_b_x + (logo_a_size / 2)
     draw.multiline_text(
         (team_b_center_x - (name_b_w / 2), layout["team_y"] + 20), 
         team_b_name_wrapped, 
@@ -234,6 +235,18 @@ def render_football_graphic(sport_payload, bg_path, output_file_path, output_con
         align="center"
     )
 
+    # 7. Matchweek / Matchday Line Below (Centered horizontally near bottom)
+    if match_week_or_day:
+        week_text = match_week_or_day.upper()
+        # Adjust font size and vertical position here as needed
+        font_week = get_styled_font(normal_path, 56)
+        week_bbox = draw.textbbox((0, 0), week_text, font=font_week)
+        week_w = week_bbox[2] - week_bbox[0]
+        week_x = (width - week_w) / 2
+        week_y = 540  # Positioned cleanly near the bottom of the 675px canvas
+
+        draw.text((week_x, week_y), week_text, fill=(250, 204, 21, 255), font=font_week) # Trophy Gold
+
     # 8. Save Output File with Strict Under-300KB Compression Rules
     format_type = output_config.get("format", "WebP").lower()
     quality = output_config.get("quality", 85)
@@ -241,6 +254,6 @@ def render_football_graphic(sport_payload, bg_path, output_file_path, output_con
     
     final_image = canvas.convert("RGB")
     if format_type == "webp":
-        final_image.save(output_file_path, "WEBP", quality=quality, method=method)
+        final_image.save(output_file_path, "WEBP", quality=quality, method=6)
     else:
         final_image.save(output_file_path, "JPEG", quality=quality)
