@@ -4,8 +4,11 @@ __pycache__/
 *.py[cod]
 *$py.class
 .vscode/
+.env
 
 # Local Outputs & Caches
+input/*
+output/*
 headless/input/*
 !headless/input/.gitkeep
 headless/output/*

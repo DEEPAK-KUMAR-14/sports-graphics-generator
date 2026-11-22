@@ -1,32 +1,35 @@
+import json
 import os
 import sys
-import json
 
 # Add scripts directory to python path
 sys.path.append(os.path.join(os.path.dirname(__file__), "scripts"))
 from background_selector import get_random_background
-from image_renderer import render_football_graphic as render_scorecard
 from fixture_image_renderer import render_fixture_graphic
+from image_renderer import render_football_graphic as render_scorecard
+
 
 def process_match_files():
-    base_dir = os.path.dirname(__file__)
-    input_dir = os.path.join(base_dir, "input")
-    output_dir = os.path.join(base_dir, "output")
-    formats_dir = os.path.join(base_dir, "formats")
+    headless_dir = os.path.dirname(os.path.abspath(__file__))
+    project_root = os.path.dirname(headless_dir)
+
+    input_dir = os.path.join(project_root, "input")
+    output_dir = os.path.join(project_root, "output")
+    formats_dir = os.path.join(headless_dir, "formats")
 
     os.makedirs(input_dir, exist_ok=True)
     os.makedirs(output_dir, exist_ok=True)
 
     # Load output formatting configuration
     try:
-        with open(os.path.join(formats_dir, "output_format.json"), "r") as f:
+        with open(os.path.join(formats_dir, "output_format.json"), "r", encoding="utf-8") as f:
             output_config = json.load(f)
     except Exception as e:
         print(f"❌ Error loading output_format.json: {e}")
         return
 
     # Scan input folder for JSON queue files
-    input_files = [f for f in os.listdir(input_dir) if f.endswith(".json")]
+    input_files = sorted(f for f in os.listdir(input_dir) if f.endswith(".json"))
     if not input_files:
         print(f"⚠️ No JSON files found in {input_dir}. Add match data files to process.")
         return
@@ -50,7 +53,7 @@ def process_match_files():
 
         sport_payload = match_data[sport_type]
         sport_conf = output_config.get(sport_type, {"format": "WebP", "quality": 85})
-        
+
         # Determine file extension based on format configuration
         output_ext = ".webp" if sport_conf.get("format", "WebP").lower() == "webp" else ".jpg"
         base_name = os.path.splitext(file_name)[0]
@@ -63,19 +66,19 @@ def process_match_files():
         # Render graphic based on sport type and imageType sub-category
         if sport_type == "football":
             image_type = sport_payload.get("imageType", "scorecard").strip().lower()
-            
+
             if image_type == "fixture":
                 print("🛡️ Routing to Fixture Renderer (fixture_image_renderer.py)...")
                 render_fixture_graphic(sport_payload, random_bg_path, output_file_path, sport_conf)
-                print(f"✅ Success! Football fixture graphic generated: output/{output_filename}")
+                print(f"✅ Success! Football fixture graphic generated: {output_file_path}")
             else:
                 print("⚽ Routing to Scorecard Renderer (image_renderer.py)...")
                 render_scorecard(sport_payload, random_bg_path, output_file_path, sport_conf)
-                print(f"✅ Success! Football scorecard graphic generated: output/{output_filename}")
-            
+                print(f"✅ Success! Football scorecard graphic generated: {output_file_path}")
+
         elif sport_type == "formula1":
-            # Future expansion slot for Formula 1 rendering module!
             print(f"ℹ️ Formula 1 rendering schema detected for {file_name}. (Module can be hooked up here next!)")
+
 
 if __name__ == "__main__":
     process_match_files()
